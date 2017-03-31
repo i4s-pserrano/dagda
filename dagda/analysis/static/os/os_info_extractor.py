@@ -31,6 +31,8 @@ def get_soft_from_docker_image(docker_driver, image_name):
     products = get_soft_from_docker_container_id(docker_driver, container_id)
     # Stop container
     docker_driver.docker_stop(container_id)
+    # Delete container
+    docker_driver.docker_remove(container_id)
     # Return packages
     return products
 

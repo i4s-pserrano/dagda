@@ -91,6 +91,10 @@ class DockerDriver:
     def docker_stop(self, container_id):
         self.cli.stop(container=container_id)
 
+    # Delete container
+    def docker_remove(self, container_id):
+        self.cli.remove_container(container=container_id)
+
     # Gets docker client
     def get_docker_client(self):
         return self.cli
