@@ -22,7 +22,9 @@ from analysis.static.os import os_info_extractor
 from analysis.static.dependencies import dep_info_extractor
 from log.dagda_logger import DagdaLogger
 from driver import docker_driver
+from multiprocessing import Pool
 import requests
+
 
 
 # Analyzer class
@@ -32,12 +34,12 @@ class RemoteAnalyzer:
     # -- Public methods
 
     # Analyzer Constructor
-    def __init__(self):
+    def __init__(self, dagda_server_host='127.0.0.1', dagda_server_port='5000', dagba_server_timeout='2'):
         super(RemoteAnalyzer, self).__init__()
-        self.Api_Server = 'localhost'
-        self.Api_Port = 5000
-        self.Api_Req = requests
-        self.Timeout = 30
+        self.dagda_server_host = dagda_server_host
+        self.dagda_server_port = dagda_server_port
+        self.dagba_server_timeout = dagba_server_timeout
+        self.dagba_request = requests
         try:
             self.dockerDriver = docker_driver.DockerDriver()
         except:
@@ -149,8 +151,11 @@ class RemoteAnalyzer:
             prod_version = product + '?=' + filt_prod
 
         try:
-            output = self.Api_Req.get('http://localhost:5000/v1/vuln/products/' + prod_version, timeout=self.Timeout).text
+            output = self.dagba_request.get('http://' + self.dagda_server_host + ':' + str(self.dagda_server_port) + \
+                                      '/v1/vuln/products/' + prod_version, timeout=self.dagba_server_timeout).text
         except requests.exceptions.Timeout:
             output = "Timeout asking the API"
+        except requests.exceptions.ConnectionError:
+            output = "Api is not accesible"
 
         return output
