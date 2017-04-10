@@ -31,7 +31,9 @@ class DockerDriver:
     def __init__(self):
         super(DockerDriver, self).__init__()
         try:
-            self.cli = docker.APIClient(base_url='unix://var/run/docker.sock', version="auto", timeout=3600)
+            # Return a client configured from environment variables. The environment variables used are the same as
+            # those used by the Docker command-line client.
+            self.cli = docker.from_env(version="auto", timeout=3600).api
         except DockerException:
             DagdaLogger.get_logger().error('Error while fetching Docker server API version: Assumming Travis CI tests.')
             self.cli = None
@@ -51,7 +53,7 @@ class DockerDriver:
                     ids = c['Id']
         except NotFound:
             # Nothing to do
-            None
+            pass
         return ids
 
     # Checks if docker image is in the local machine
@@ -82,6 +84,10 @@ class DockerDriver:
     # Removes the docker image
     def docker_remove_image(self, image_name):
         self.cli.remove_image(image=image_name, force=True)
+
+    # Removes docker container
+    def docker_remove_container(self, container_id):
+        self.cli.remove_container(container=container_id, force=True)
 
     # Start container
     def docker_start(self, container_id):
