@@ -108,7 +108,14 @@ class RemoteAnalyzer:
             splitted_dep = dependency.split("#")
             d['product'] = splitted_dep[1]
             d['version'] = splitted_dep[2]
-            d['vulnerabilities'] = self.get_api_vulnerabilities(d['product'], d['version'])
+            vulnerabilities_temp = {}
+            vulnerabilities = {}
+            vulnerabilities_temp = self.get_api_vulnerabilities(package['product'], package['version'])
+            if 'err' in vulnerabilities_temp:
+                vulnerabilities = {}
+            else:
+                vulnerabilities = vulnerabilities_temp
+            p['vulnerabilities'] = vulnerabilities
             dep_details[splitted_dep[0]].append(d)
         # Prepare output
         data['vuln_dependencies'] = len(dep_details['java']) + len(dep_details['python']) + \
@@ -127,7 +134,14 @@ class RemoteAnalyzer:
             p = {}
             p['product'] = package['product']
             p['version'] = package['version']
-            p['vulnerabilities'] = self.get_api_vulnerabilities(package['product'], package['version'])
+            vulnerabilities_temp = {}
+            vulnerabilities = {}
+            vulnerabilities_temp = self.get_api_vulnerabilities(package['product'], package['version'])
+            if 'err' in vulnerabilities_temp:
+                vulnerabilities = {}
+            else:
+                vulnerabilities = vulnerabilities_temp
+            p['vulnerabilities'] = vulnerabilities
             if len(p['vulnerabilities']) > 0:
                 p['is_vulnerable'] = True
                 vuln_products += 1

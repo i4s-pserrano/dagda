@@ -22,7 +22,7 @@ import argparse
 
 def save_report_html(data,template,output):
     # generate html-output
-    env = jinja2.Environment(loader=jinja2.FileSystemLoader(searchpath='templates/'))
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader(searchpath='/'))
     template = env.get_template(template)
     html = template.render(data)
     with open(output, 'w') as f:
