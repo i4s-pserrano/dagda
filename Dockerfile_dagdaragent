@@ -20,4 +20,5 @@ COPY dagda /opt/dagda
 ADD requirements.txt /opt/dagda/requirements.txt
 RUN pip install -r /opt/dagda/requirements.txt
 WORKDIR /opt/dagda
+USER dagda
 ENTRYPOINT ["python", "dagdaragent.py"]
