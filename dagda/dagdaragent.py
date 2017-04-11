@@ -19,11 +19,18 @@
 
 from ragent import analyzer_agent
 import argparse
+import datetime
 import jinja2
+
+def format_date_ES(unix_timestamp):
+    value = datetime.datetime.fromtimestamp(unix_timestamp)
+    return value.strftime('%d-%m-%Y %H:%M:%S')
+
 
 def save_report_html(data,template,output):
     # generate html-output
     env = jinja2.Environment(loader=jinja2.FileSystemLoader(searchpath='rpt/'))
+    env.filters['format_date_ES'] = format_date_ES
     template = env.get_template(template)
     html = template.render(data=data)
     with open(output, 'w') as f:
