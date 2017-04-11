@@ -108,11 +108,11 @@ class RemoteAnalyzer:
             splitted_dep = dependency.split("#")
             d['product'] = splitted_dep[1]
             d['version'] = splitted_dep[2]
-            vulnerabilities_temp = {}
-            vulnerabilities = {}
+            vulnerabilities_temp = []
+            vulnerabilities = []
             vulnerabilities_temp = self.get_api_vulnerabilities(package['product'], package['version'])
             if 'err' in vulnerabilities_temp:
-                vulnerabilities = {}
+                vulnerabilities = []
             else:
                 vulnerabilities = vulnerabilities_temp
             p['vulnerabilities'] = vulnerabilities
@@ -134,11 +134,11 @@ class RemoteAnalyzer:
             p = {}
             p['product'] = package['product']
             p['version'] = package['version']
-            vulnerabilities_temp = {}
-            vulnerabilities = {}
+            vulnerabilities_temp = []
+            vulnerabilities = []
             vulnerabilities_temp = self.get_api_vulnerabilities(package['product'], package['version'])
             if 'err' in vulnerabilities_temp:
-                vulnerabilities = {}
+                vulnerabilities = []
             else:
                 vulnerabilities = vulnerabilities_temp
             p['vulnerabilities'] = vulnerabilities
@@ -160,13 +160,13 @@ class RemoteAnalyzer:
         filt_prod = product.replace("-", " ").replace("_", " ")
         output = []
         if not version:
-            prod_version = product
+            prod_version = filt_prod
         else:
-            prod_version = product + '?=' + filt_prod
+            prod_version = filt_prod + '/' + version
 
         try:
             output = self.dagba_request.get('http://' + self.dagda_server_host + ':' + str(self.dagda_server_port) + \
-                                      '/v1/vuln/products/' + prod_version, timeout=self.dagba_server_timeout).text
+                                      '/v1/vuln/products/' + prod_version, timeout=self.dagba_server_timeout).json()
         except requests.exceptions.Timeout:
             output = "Timeout asking the API"
         except requests.exceptions.ConnectionError:

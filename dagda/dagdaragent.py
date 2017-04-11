@@ -19,12 +19,13 @@
 
 from ragent import analyzer_agent
 import argparse
+import jinja2
 
 def save_report_html(data,template,output):
     # generate html-output
-    env = jinja2.Environment(loader=jinja2.FileSystemLoader(searchpath='/'))
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader(searchpath='rpt/'))
     template = env.get_template(template)
-    html = template.render(data)
+    html = template.render(data=data)
     with open(output, 'w') as f:
         f.write(html)
 
@@ -38,6 +39,7 @@ def parse_arguments():
     parser.add_argument('-s', '--server', type=str, help='Dagda Server', required=True)
     parser.add_argument('-p', '--port', type=int, help='Dagda Server Port', required=True)
     parser.add_argument('-t', '--timeout', type=int, help='Vulnerabilities query Dagda Server timeout')
+    parser.add_argument('-f', '--file', help='save output to a html format on this file')
     args = parser.parse_args()
     return args
 
@@ -52,6 +54,8 @@ def main():
                                               dagba_server_timeout=timeout)
     output = agent_cli.evaluate_image(args.docker_image, None)
     print (output)
+    if args.file:
+        save_report_html(output,'template.html',args.file)
 
 
 
