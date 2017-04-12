@@ -11,7 +11,7 @@ RUN addgroup -g ${gid} ${group} && \
 COPY dagda /opt/dagda
 ADD requirements.txt /opt/dagda/requirements.txt
 RUN pip install -r /opt/dagda/requirements.txt
-RUN chown -R dagda:dagda /opt/
+RUN chown -R dagda:dagda /opt
 WORKDIR /opt/dagda
 USER dagda
 ENTRYPOINT ["python", "dagdaragent.py"]
