@@ -1,7 +1,17 @@
 FROM python:3.6-alpine
-RUN mkdir /opt/dagda
+ARG user=dagda
+ARG group=dagda
+ARG uid=1000
+ARG gid=1000
+ENV DAGDA_HOME /opt/dagda
+RUN addgroup -g ${gid} ${group} && \
+    adduser -u ${uid-} -D -G ${group} -G ping -s /bin/bash ${user} && \
+    mkdir -p $DAGDA_HOME && \
+    chown $user:$group $DAGDA_HOME
 COPY dagda /opt/dagda
 ADD requirements.txt /opt/dagda/requirements.txt
 RUN pip install -r /opt/dagda/requirements.txt
+RUN chown -R dagda:dagda /opt/
 WORKDIR /opt/dagda
+USER dagda
 ENTRYPOINT ["python", "dagdaragent.py"]
