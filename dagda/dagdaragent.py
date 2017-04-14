@@ -121,13 +121,13 @@ HTML_DAGDA = """
           {% for vulnerability in product.vulnerabilities %}
             {% for key, value in vulnerability.items() %}
               {% if 'CVE' in key %}
-                  <a href="https://nvd.nist.gov/vuln/detail/{{ key }}">{{key}}</a> Score: <b>{{value['cvss_base']}}</b> cvss exploit: <b>{{value["cvss_exploit"]}}</b> Summary:{{value["summary"]}}<br>
+                  <a target="_blank" href="https://nvd.nist.gov/vuln/detail/{{ key }}">{{key}}</a> Score: <b>{{value['cvss_base']}}</b> cvss exploit: <b>{{value["cvss_exploit"]}}</b> Summary:{{value["summary"]}}<br>
               {% elif 'BID' in key %}
                   {% set ID = key.split('-') %}
-                  <a href="http://www.securityfocus.com/bid/{{ID[1]}}">{{key}}</a>
+                  <a target="_blank" href="http://www.securityfocus.com/bid/{{ID[1]}}">{{key}}</a>
               {% else %}
                   {% set ID = key.split('-') %}
-                  <a href="https://www.exploit-db.com/exploits/{{ID[1]}}/">{{key}}</a>
+                  <a target="_blank" href="https://www.exploit-db.com/exploits/{{ID[1]}}/">{{key}}</a>
               {% endif %}
             {%- endfor %}
           {%- endfor %}
