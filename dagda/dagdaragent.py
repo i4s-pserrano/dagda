@@ -146,7 +146,7 @@ def format_date_ES(unix_timestamp):
     return value.strftime('%d-%m-%Y %H:%M:%S')
 
 
-def save_report_html(data,template,output):
+def save_report_html(data,output):
     # Generate html-output
     env = jinja2.Environment()
     env.filters['format_date_ES'] = format_date_ES
@@ -182,7 +182,7 @@ def main():
     output = agent_cli.evaluate_image(args.docker_image, None)
     print (output)
     if args.file:
-        save_report_html(output,'template.html',args.file)
+        save_report_html(output,args.file)
 
 
 
