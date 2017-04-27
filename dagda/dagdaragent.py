@@ -121,13 +121,13 @@ HTML_DAGDA = """
           {% for vulnerability in product.vulnerabilities %}
             {% for key, value in vulnerability.items() %}
               {% if 'CVE' in key %}
-                  <a target="_blank" href="https://nvd.nist.gov/vuln/detail/{{ key }}">{{key}}</a> Score: <b>{{value['cvss_base']}}</b> cvss exploit: <b>{{value["cvss_exploit"]}}</b> Summary:{{value["summary"]}}<br>
+                  <a target="_blank" href="https://nvd.nist.gov/vuln/detail/{{ key }}">{{key}}</a> - <span>Score: <b>{{value['cvss_base']}}</b></span> <span>cvss exploit: <b>{{value["cvss_exploit"]}}</b></span> <span>Summary:{{value["summary"]}}</span><br>
               {% elif 'BID' in key %}
                   {% set ID = key.split('-') %}
-                  <a target="_blank" href="http://www.securityfocus.com/bid/{{ID[1]}}">{{key}}</a>
-              {% else %}
+                  <a target="_blank" href="http://www.securityfocus.com/bid/{{ID[1]}}">{{key}}</a><br>
+                  {% else %}
                   {% set ID = key.split('-') %}
-                  <a target="_blank" href="https://www.exploit-db.com/exploits/{{ID[1]}}/">{{key}}</a>
+                  <a target="_blank" href="https://www.exploit-db.com/exploits/{{ID[1]}}/">{{key}}</a> - <span>AttackType:<b>{{value['type']}}</b></span> <span>Platform:<b>{{value["platform"]}}</b></span> <span>Port:<b>{{value["port"]}}</b></span> <span>Summary:{{value["description"]}}</span><br>
               {% endif %}
             {%- endfor %}
           {%- endfor %}

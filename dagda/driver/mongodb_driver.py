@@ -249,8 +249,12 @@ class MongoDbDriver:
                 exploit_db_tmp = 'EXPLOIT_DB_ID-' + str(exploit_db['exploit_db_id'])
                 if exploit_db_tmp not in output:
                     info = {}
-                    exploit_tmp = ""
-                    info[exploit_db_tmp] = exploit_tmp
+                    exploit_data = self.db.exploit_db_info.find_one({'exploit_db_id': exploit_db['exploit_db_id']})
+                    if exploit_data is not None:
+                        # delte objectid
+                        exploit_info = exploit_data.copy()
+                        del exploit_info["_id"]
+                    info[exploit_db_tmp] = exploit_info
                     output.append(info)
         # Return
         return output
