@@ -125,7 +125,7 @@ HTML_DAGDA = """
               {% elif 'BID' in key %}
                   {% set ID = key.split('-') %}
                   <a target="_blank" href="http://www.securityfocus.com/bid/{{ID[1]}}">{{key}}</a> - <span>Class: <b>{{value['class']}}</b></span> <span>local: <b>{{value["local"]}}</b></span> <span>remote: <b>{{value["remote"]}}</b></span>
-                    <span>Afected CVE: <b>{% for sub_cve in value["cve"] %}<a target="_blank" href="https://nvd.nist.gov/vuln/detail/{{ sub_cve}}">{{sub_cve}}</a></b> {%- endfor %}
+                    <span>Afected CVE: {% for sub_cve in value["cve"] %}<a target="_blank" href="https://nvd.nist.gov/vuln/detail/{{ sub_cve}}">{{sub_cve}}</a> {%- endfor %}
                   </span> <span>Summary:{{value["title"]}}</span><br>
                   {% else %}
                   {% set ID = key.split('-') %}
